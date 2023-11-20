@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Week12</title>
 </head>
+
 <body>
     <h1>Daftar Mahasiswa</h1>
     <a href="/students/create">Create new Student</a>
@@ -34,6 +36,7 @@
                     <a href="/students/{{ $student->id }}/edit">EDIT</a> |
                     <form action="/students/{{ $student->id }}" method="post">
                         @method('DELETE')
+                        {{-- Method DELETE dipake buat nge delete data yg dipilih --}}
                         @csrf
                         <button type="submit">DELETE</button>
                     </form>
@@ -44,4 +47,5 @@
         @endforeach
     </table>
 </body>
+
 </html>

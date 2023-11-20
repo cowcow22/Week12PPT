@@ -19,3 +19,6 @@ Route::get('/', function () {
 });
 
 Route::resource('students', StudentController::class);
+//Resource dipake buat semua route CRUD yang diperlukan untuk mengelola sumber daya "students".
+//students itu nama database yg mau dikelola
+//StudentController akan mengatur semua aksi yang terkait dengan sumber daya "students".

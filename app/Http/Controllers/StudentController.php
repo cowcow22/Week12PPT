@@ -13,7 +13,7 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $students = Student::all();
+        $students = Student::all(); //all dipake buat ngambil semua data yang ada di database
         return view('students.index', ['students' => $students]);
     }
 
@@ -31,6 +31,7 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
+        //Validasi Data
         $this->validate($request, [
             'nim' => 'required|max:10|unique:students',
             'nama' => 'required|max:50',
@@ -41,15 +42,19 @@ class StudentController extends Controller
             'telepon' => 'required|max:12|unique:students'
         ]);
 
+        //ngambil extensi foto yg di upload
         $ext = $request->file('photo')->extension();
         //check ekstensi foto
         if (!in_array($ext, ['jpg', 'jpeg', 'png'])) {
             return redirect()->back()->withInput()->withErrors(['photo' => 'The photo must be a jpg, jpeg, or png file.']);
         }
 
+        //Store foto yg diupload ke public/photo
         $path = $request->file('photo')->storePublicly('photos', 'public');
         // $ext = $request->file('photos')->extension();
         // return "File stored at: " . $path . "<br />File Extension: " . $ext;
+
+        //Store data yg di upload ke database
         $students = new Student();
         $students->nim = $request->nim;
         $students->nama = $request->nama;
@@ -69,8 +74,8 @@ class StudentController extends Controller
      */
     public function show(string $id)
     {
-        $students = Student::findOrFail($id);
-        $photos = Storage::url($students->photo);
+        $students = Student::findOrFail($id); //mencari id yg dipilih
+        $photos = Storage::url($students->photo); //dipake buat ngambil photo yang ada di folder storage
         return view('students.show', ['students' => $students, 'photos' => $photos]);
     }
 
@@ -88,6 +93,7 @@ class StudentController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        //validasi
         $this->validate($request, [
             'nim' => 'max:10',
             'nama' => 'max:50',
@@ -113,6 +119,7 @@ class StudentController extends Controller
             return redirect()->back()->withInput()->withErrors(['telepon' => 'The number is already used.']);
         }
 
+        //upload ke database
         $students = Student::findOrFail($id);
         if ($request->file('photo') == null) {
             $students->nim = $request->nim;
