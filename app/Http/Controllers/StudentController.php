@@ -42,11 +42,10 @@ class StudentController extends Controller
         ]);
 
         $ext = $request->file('photo')->extension();
-        // return $ext;
+        //check ekstensi foto
         if (!in_array($ext, ['jpg', 'jpeg', 'png'])) {
             return redirect()->back()->withInput()->withErrors(['photo' => 'The photo must be a jpg, jpeg, or png file.']);
         }
-
 
         $path = $request->file('photo')->storePublicly('photos', 'public');
         // $ext = $request->file('photos')->extension();
@@ -113,6 +112,7 @@ class StudentController extends Controller
         if ($students->count() > 0) {
             return redirect()->back()->withInput()->withErrors(['telepon' => 'The number is already used.']);
         }
+
         $students = Student::findOrFail($id);
         if ($request->file('photo') == null) {
             $students->nim = $request->nim;
